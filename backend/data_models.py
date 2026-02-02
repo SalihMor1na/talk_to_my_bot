@@ -21,5 +21,5 @@ class Prompt(BaseModel):
 
 class RagResponse(BaseModel):
     filename: str = Field(description="filename of the retrieved file without suffix")
-    filepath: str = Field(description="absolute path to the retrieved file")
+    file_path: str = Field(description="absolute path to the retrieved file")
     answer: str = Field(description="answer based on the retrieved file")

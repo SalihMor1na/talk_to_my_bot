@@ -1,6 +1,6 @@
 from pydantic_ai import Agent
-from data_models import RagResponse
-from constants import VECTOR_DATABASE_PATH
+from backend.data_models import RagResponse
+from backend.constants import VECTOR_DATABASE_PATH
 import lancedb
 
 
@@ -33,7 +33,7 @@ def retrieve_top_documents(query: str, k=3) -> str:
     
     Filename: {results[0]["filename"]},
     
-    Filepath: {results[0]["filepath"]},
+    Filepath: {results[0]["file_path"]},
 
     Content: {results[0]["content"]}
     
