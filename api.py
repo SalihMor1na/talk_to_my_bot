@@ -1,3 +1,6 @@
+
+from backend.rag import rag_agent
+from backend.data_models import Prompt
 from backend.constants import DATA_PATH
 import shutil
 from fastapi import FastAPI, UploadFile, HTTPException
@@ -26,3 +29,9 @@ async def delete_file(filename: str):
         "filename": filename,
         "message": "File deleted successfully"
     }
+
+@app.post("/rag/query")
+async def query_documentation(query: Prompt):
+    result = await rag_agent.run(query.prompt)
+
+    return result.output
