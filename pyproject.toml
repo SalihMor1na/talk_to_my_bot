@@ -17,4 +17,5 @@ dependencies = [
     "pypdf2>=3.0.1",
     "streamlit>=1.19.0",
     "uvicorn>=0.40.0",
+    "setuptools>=80.10.2",
 ]
