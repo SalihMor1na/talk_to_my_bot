@@ -117,7 +117,19 @@ elif page == "Chat":
     st.subheader("Conversation")
     
     if send_button and user_input:
-        st.info("Will send to RAG in next step...")
-        st.write(f"You: {user_input}")
-    else:
-        st.write("Start chatting by typing a question above!")
+        with st.spinner("Thinking..."):
+            try:
+                response = requests.post(
+                    f"{BACKEND_URL}/rag/query",
+                    json={"prompt": user_input}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    st.success("**Bot:**")
+                    st.write(data.get('answer', 'No answer available'))
+                else:
+                    st.error(f"Failed: {response.status_code}")
+                    
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
