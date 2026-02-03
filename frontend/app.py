@@ -54,7 +54,23 @@ elif page == "Profile":
     
     
     if st.button("Load Profile"):
-        st.info("Will fetch profile data in next step...")
+        with st.spinner("Loading profile..."):
+            try:
+                
+                response = requests.post(
+                    f"{BACKEND_URL}/rag/query",
+                    json={"prompt": "Give me a brief summary of this person's background, including name, contact info, and key skills"}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    st.session_state['profile_data'] = data
+                    st.success("Profile loaded!")
+                else:
+                    st.error(f"Failed to load profile: {response.status_code}")
+                    
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
     
     
     st.divider()
