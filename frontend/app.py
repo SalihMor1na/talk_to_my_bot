@@ -50,8 +50,44 @@ if page == "Upload CV":
                     st.error(f"Error: {str(e)}")
     
 elif page == "Profile":
-    st.title("Profile")
-    st.write("View your CV summary")
+    st.title("Profile Summary")
+    
+    
+    if st.button("Load Profile"):
+        st.info("Will fetch profile data in next step...")
+    
+    
+    st.divider()
+    
+   
+    st.subheader("Basic Information")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write("**Name:**")
+        st.write("**Email:**")
+        st.write("**Phone:**")
+    
+    with col2:
+        st.write("Data will load here")
+        st.write("Data will load here")
+        st.write("Data will load here")
+    
+    
+    st.divider()
+    st.subheader("Key Metrics")
+    
+    
+    kpi1, kpi2, kpi3 = st.columns(3)
+    
+    with kpi1:
+        st.metric(label="Years of Experience", value="--")
+    
+    with kpi2:
+        st.metric(label="Skills", value="--")
+    
+    with kpi3:
+        st.metric(label="Education Level", value="--")
     
 elif page == "Chat":
     st.title("Chat with CV Bot")
