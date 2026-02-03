@@ -17,7 +17,23 @@ page = st.sidebar.radio("Go to", ["Upload CV", "Profile", "Chat"])
 
 if page == "Upload CV":
     st.title("Upload CV")
-    st.write("Upload your CV to get started")
+    st.write("Upload a CV (PDF or DOCX) to get started")
+    
+
+    uploaded_file = st.file_uploader(
+        "Choose a file",
+        type=["pdf", "docx"],
+        help="Upload a CV in PDF or DOCX format"
+    )
+    
+    
+    if uploaded_file is not None:
+        st.success(f"File uploaded: {uploaded_file.name}")
+        st.write(f"File size: {uploaded_file.size} bytes")
+        st.write(f"File type: {uploaded_file.type}")
+         
+        if st.button("Upload to Backend"):
+            st.info("Will send to backend in next step...")
     
 elif page == "Profile":
     st.title("Profile")
