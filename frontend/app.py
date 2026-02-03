@@ -33,7 +33,21 @@ if page == "Upload CV":
         st.write(f"File type: {uploaded_file.type}")
          
         if st.button("Upload to Backend"):
-            st.info("Will send to backend in next step...")
+            with st.spinner("Uploading..."):
+                try:
+                    files = {"file": uploaded_file}
+                    response = requests.post(
+                        f"{BACKEND_URL}/uploadfile/",
+                        files=files
+                    )
+                    
+                    if response.status_code == 200:
+                        st.success("CV uploaded successfully!")
+                    else:
+                        st.error(f"Upload failed: {response.status_code}")
+                        
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
     
 elif page == "Profile":
     st.title("Profile")
