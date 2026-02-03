@@ -75,35 +75,28 @@ elif page == "Profile":
     
     st.divider()
     
-   
-    st.subheader("Basic Information")
-    col1, col2 = st.columns(2)
     
-    with col1:
-        st.write("**Name:**")
-        st.write("**Email:**")
-        st.write("**Phone:**")
-    
-    with col2:
-        st.write("Data will load here")
-        st.write("Data will load here")
-        st.write("Data will load here")
-    
-    
-    st.divider()
-    st.subheader("Key Metrics")
-    
-    
-    kpi1, kpi2, kpi3 = st.columns(3)
-    
-    with kpi1:
-        st.metric(label="Years of Experience", value="--")
-    
-    with kpi2:
-        st.metric(label="Skills", value="--")
-    
-    with kpi3:
-        st.metric(label="Education Level", value="--")
+    if 'profile_data' in st.session_state:
+        profile_info = st.session_state['profile_data']
+        
+        st.subheader("Basic Information")
+        st.write(profile_info.get('answer', 'No data available'))
+        
+        st.divider()
+        st.subheader("Key Metrics")
+        
+        kpi1, kpi2, kpi3 = st.columns(3)
+        
+        with kpi1:
+            st.metric(label="CV File", value=profile_info.get('filename', '--'))
+        
+        with kpi2:
+            st.metric(label="Status", value="Loaded")
+        
+        with kpi3:
+            st.metric(label="Source", value="RAG System")
+    else:
+        st.info("Click 'Load Profile' to view CV information")
     
 elif page == "Chat":
     st.title("Chat with CV Bot")
