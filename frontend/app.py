@@ -100,4 +100,24 @@ elif page == "Profile":
     
 elif page == "Chat":
     st.title("Chat with CV Bot")
-    st.write("Ask questions about the CV")
+    st.write("Ask questions about the uploaded CV")
+    
+   
+    user_input = st.text_input(
+        "Your question:",
+        placeholder="e.g., What programming languages do you know?",
+        key="chat_input"
+    )
+        
+    col1, col2 = st.columns([1, 5])
+    with col1:
+        send_button = st.button("Send", use_container_width=True)
+        
+    st.divider()
+    st.subheader("Conversation")
+    
+    if send_button and user_input:
+        st.info("Will send to RAG in next step...")
+        st.write(f"You: {user_input}")
+    else:
+        st.write("Start chatting by typing a question above!")
