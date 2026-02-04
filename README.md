@@ -24,8 +24,6 @@ Syftet med projektet är att:
   - antal års erfarenhet
   - roller/yrken
   - kort personlig sammanfattning
-- 💬 Chatta med en bot som **imiterar profilen**
-- 🔊 (Valfritt) Prata med boten via röst
 
 ---
 
@@ -56,7 +54,7 @@ Projektet är uppdelat i följande delar:
 - Text-extraktion & eventuell RAG
 
 **Frontend**
-- JavaScript / React (eller liknande)
+- Streamlit
 - API-kommunikation
 
 **Övrigt**
@@ -89,8 +87,6 @@ npm start
 curl -X POST http://localhost:8000/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Berätta om min erfarenhet"}'
-👥 Teamarbete
-3–4 personer per grupp
 
 GitHub-repo med branches & pull requests
 
@@ -98,22 +94,7 @@ Issues + Kanban
 
 Alla medlemmar bidrar med commits
 
-📸 Screenshots
-(Lägg in screenshots här när projektet är klart)
-
 📦 Deployment
 Projektet dockeriseras
 
 Deployas till Azure (planerat)
-
-📝 Licens
-MIT License (valfritt att lägga till)
-
-📚 Notering om LLM-användning
-LLM:er har använts som stöd för:
-
-idéer
-
-mindre koddelar
-
-All LLM-genererad kod är kommenterad och förstådd av teamet.
