@@ -28,26 +28,15 @@ if page == "Upload CV":
     
     
     if uploaded_file is not None:
-        st.success(f"File uploaded: {uploaded_file.name}")
-        st.write(f"File size: {uploaded_file.size} bytes")
-        st.write(f"File type: {uploaded_file.type}")
-         
-        if st.button("Upload to Backend"):
-            with st.spinner("Uploading..."):
-                try:
-                    files = {"file": uploaded_file}
-                    response = requests.post(
-                        f"{BACKEND_URL}/uploadfile/",
-                        files=files
-                    )
-                    
-                    if response.status_code == 200:
-                        st.success("CV uploaded successfully!")
-                    else:
-                        st.error(f"Upload failed: {response.status_code}")
-                        
-                except Exception as e:
-                    st.error(f"Error: {str(e)}")
+        files = {"file": uploaded_file}
+        response = requests.post(
+            f"{BACKEND_URL}/uploadfile/",
+            files=files
+        )
+        st.success("CV uploaded successfully!")
+                               
+                       
+
     
 elif page == "Profile":
     st.title("Profile Summary")
@@ -73,7 +62,7 @@ elif page == "Profile":
                 st.error(f"Error: {str(e)}")
     
     
-    st.divider()
+        st.write("---")
     
     
     if 'profile_data' in st.session_state:
@@ -82,7 +71,7 @@ elif page == "Profile":
         st.subheader("Basic Information")
         st.write(profile_info.get('answer', 'No data available'))
         
-        st.divider()
+        st.write("---")
         st.subheader("Key Metrics")
         
         kpi1, kpi2, kpi3 = st.columns(3)
@@ -113,7 +102,7 @@ elif page == "Chat":
     with col1:
         send_button = st.button("Send", use_container_width=True)
         
-    st.divider()
+    st.write("---")
     st.subheader("Conversation")
     
     if send_button and user_input:
