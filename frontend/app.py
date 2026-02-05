@@ -12,11 +12,73 @@ def parse_experience(text):
     return "--"
 
 def parse_license(text):
+    """Parse licenses including ranges like A1-4, B1-4, D1"""
+    licenses = []
+
+    if re.search(r'\bB\b.*?(?:driver|körkort)', text, re.IGNORECASE):
+        licenses.append('B')
+
+    range_matches = re.findall(
+        r'\b([ABCD])(\d)[-–](\d)\b',
+        text,
+        re.IGNORECASE
+    )
     
-    match = re.search(r'2[.)]\s*([A-E])', text, re.IGNORECASE)
+    for letter, start, end in range_matches:
+        letter = letter.upper()
+        for num in range(int(start), int(end) + 1):
+            licenses.append(f"{letter}{num}")
+
+    individual_matches = re.findall(
+        r'\b([ABCD])(\d)\b',
+        text,
+        re.IGNORECASE
+    )
+    
+    for letter, num in individual_matches:
+        licenses.append(f"{letter.upper()}{num}")
+
+    return sorted(set(licenses)) if licenses else ["--"]
+
+def format_licenses_readable(licenses):
+    if not licenses or licenses == ["--"]:
+        return "--"
+
+    output = []
+
+    if "B" in licenses:
+        output.append("B Driver's License")
+
+    truck_groups = {
+        "A": [],
+        "B": [],
+        "D": []
+    }
+
+    for lic in licenses:
+        if len(lic) == 2 and lic[0] in truck_groups:
+            truck_groups[lic[0]].append(int(lic[1]))
+
+    for group in ["A", "B", "D"]:
+        numbers = truck_groups[group]
+        if numbers:
+            numbers = sorted(set(numbers))
+            if len(numbers) > 1:
+                output.append(f"Forklift Certificate {group}{numbers[0]}-{numbers[-1]}")
+            else:
+                output.append(f"Forklift Certificate {group}{numbers[0]}")
+
+    return ", ".join(output)
+
+def extract_summary_text(text):
+    """Extract only the professional summary (item 3) from the response"""
+    match = re.search(r'3[.)]\s*(.+?)(?:\n|$)', text, re.DOTALL)
     if match:
-        return match.group(1).upper()
-    return "--"
+        summary = match.group(1).strip()
+        summary = re.sub(r'\n\d+[.)]\s*.+', '', summary).strip()
+        return summary
+    
+    return text
 
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Upload CV", "Profile", "Chat"])
@@ -53,7 +115,15 @@ elif page == "Profile":
             try:
                 response = requests.post(
                     f"{BACKEND_URL}/rag/query",
-                    json={"prompt": "Analyze this CV and provide: 1) Total years of work experience (number only), 2) Driver's license type (letter only), 3) Brief summary of background and skills"}
+                    json={
+                        "prompt": (
+                            "Analyze this CV and provide in english only:\n"
+                            "1) Total years of work experience (number only)\n"
+                            "2) ALL licenses and certificates the person has "
+                            "(e.g. B driver's license, truck license A1–A4, B1, D1, etc.)\n"
+                            "3) Brief professional summary of all my work including name and age first"
+                        )
+                    }
                 )
                 
                 if response.status_code == 200:
@@ -73,30 +143,30 @@ elif page == "Profile":
         answer = profile_info.get('answer', '')
         
         years_exp = parse_experience(answer)
-        license_type = parse_license(answer)
-        
-        st.subheader("Basic Information")
-        st.write(answer if answer else 'No data available')
+        licenses = parse_license(answer)
+        licenses_display = format_licenses_readable(licenses)
+        summary_text = extract_summary_text(answer)
+
+        st.subheader("Short Summary")
+        st.write(summary_text if summary_text else 'No data available')
         
         st.write("---")
         st.subheader("Key Metrics")
         
-        kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
+        kpi1, kpi2 = st.columns(2)
         
         with kpi1:
-            st.metric(label="CV File", value=profile_info.get('filename', '--'))
+              st.metric(
+                label="Years of Work Experience", 
+                value=f"{years_exp} Years" if years_exp != "--" else "--"
+            )
         
         with kpi2:
-            st.metric(label="Status", value="Loaded")
-        
-        with kpi3:
-            st.metric(label="Source", value="RAG System")
-        
-        with kpi4:
-            st.metric(label="Years Experience", value=years_exp)
-        
-        with kpi5:
-            st.metric(label="Driver's License", value=license_type)
+            st.markdown("**Licenses & Certificates**")
+            st.markdown(
+                f"<div style='font-size: 1.5rem; font-weight: 600;'>{licenses_display}</div>", 
+                unsafe_allow_html=True
+            )
     else:
         st.info("Click 'Load Profile' to view CV information")
     
@@ -107,7 +177,7 @@ elif page == "Chat":
    
     user_input = st.text_input(
         "Your question:",
-        placeholder="e.g., What programming languages do you know?",
+        placeholder="e.g., What work experience do you have?",
         key="chat_input"
     )
         
