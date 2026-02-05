@@ -1,1 +1,134 @@
-# talk_to_my_bot
+# 🤖 Talk to My Bot
+
+**Talk to My Bot** är ett AI-engineering-projekt där användaren kan ladda upp sitt CV och andra dokument och därefter interagera med en chatbot som **imiterar personens profil** baserat på innehållet.
+
+Projektet är utvecklat som en del av ett AI-engineering-kursprojekt och följer ett agilt arbetssätt med fokus på backend, frontend, API och LLM-integration.
+
+---
+
+## 🎯 Syfte
+
+Syftet med projektet är att:
+
+- tillämpa AI-engineering-koncept för att lösa ett verkligt problem  
+- bygga en fullstack-applikation (backend + frontend)  
+- arbeta agilt i grupp med Git, issues och pull requests  
+- använda LLM:er på ett kontrollerat och begripligt sätt  
+
+---
+
+## 🧠 Funktionalitet
+
+- 📄 Ladda upp CV, personliga brev eller liknande dokument  
+- 🧾 Extrahera och sammanfatta information från dokument  
+- 📊 Visa en profilsammanfattning, till exempel:
+  - antal års erfarenhet  
+  - roller och yrken  
+  - kort personlig sammanfattning  
+
+---
+
+## 🏗️ Arkitektur
+
+Projektet är uppdelat i följande delar:
+
+```
+talk_to_my_bot/
+│
+├── backend/              # API, AI-logik och dokumenthantering
+├── frontend/             # Webbgränssnitt för användaren
+├── data/                 # Dokument, embeddings eller testdata
+├── api.py                # API-entrypoint
+├── pdfs_to_text.py       # PDF → text-konvertering
+├── explorations.ipynb    # Experiment och tester
+├── pyproject.toml        # Python-projektkonfiguration
+└── README.md
+```
+
+---
+
+## ⚙️ Tekniker
+
+### Backend
+- Python  
+- FastAPI  
+- LLM (t.ex. OpenAI)  
+- Text-extraktion och eventuell RAG  
+
+### Frontend
+- Streamlit  
+- API-kommunikation  
+
+### Övrigt
+- Git & GitHub  
+- Agilt arbetssätt (Kanban, issues)  
+- Docker (planerat)  
+- Deployment till Azure (planerat)  
+
+---
+
+## 🚀 Installation & Körning
+
+### 1. Klona repot
+```bash
+git clone https://github.com/SalihMor1na/talk_to_my_bot.git
+cd talk_to_my_bot
+```
+
+### 2. Skapa virtuell miljö (backend)
+```bash
+python -m venv venv
+```
+
+### 3. Aktivera virtuell miljö
+
+**macOS / Linux**
+```bash
+source venv/bin/activate
+```
+
+**Windows**
+```bash
+venv\Scripts\activate
+```
+
+### 4. Installera beroenden
+```bash
+pip install -r backend/requirements.txt
+```
+
+### 5. Starta backend
+```bash
+uvicorn api:app --reload
+```
+
+### 6. Starta frontend
+```bash
+cd frontend
+streamlit run app.py
+```
+
+---
+
+## 🧪 Exempel på API-anrop
+
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Berätta om min erfarenhet"}'
+```
+
+---
+
+## 👥 Samarbete & Arbetsflöde
+
+- GitHub-repo med branches och pull requests  
+- Issues + Kanban-board  
+- Alla gruppmedlemmar bidrar med commits  
+
+---
+
+## 📦 Deployment
+
+- Projektet dockeriseras  
+- Deployment till Azure (planerat)  
