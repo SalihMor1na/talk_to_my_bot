@@ -1,5 +1,5 @@
 import lancedb 
-from constants import VECTOR_DATABASE_PATH,DATA_PATH
+from backend.src.constants import VECTOR_DATABASE_PATH,DATA_PATH
 from data_models import Person
 import time
 def setup_vector_db(path):

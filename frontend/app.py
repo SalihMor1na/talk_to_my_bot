@@ -1,8 +1,9 @@
 import streamlit as st
 import requests
 import re
+import os
 
-BACKEND_URL = "http://localhost:8000"
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 def parse_experience(text):
     
@@ -86,21 +87,17 @@ page = st.sidebar.radio("Go to", ["Upload CV", "Profile", "Chat"])
 
 if page == "Upload CV":
     st.title("Upload CV")
-    st.write("Upload a CV (PDF or DOCX) to get started")
-    
 
     uploaded_file = st.file_uploader(
         "Choose a file",
-        type=["pdf", "docx"],
-        help="Upload a CV in PDF or DOCX format"
+        type=["pdf", "docx"]
     )
-    
-    
-    if uploaded_file is not None:
-        files = {"file": uploaded_file}
+
+    if uploaded_file is not None and st.button("Upload"):
         response = requests.post(
-            f"{BACKEND_URL}/uploadfile/",
-            files=files
+            "http://backend:8000/uploadfile/",
+            files={"file": uploaded_file},
+            timeout=10,
         )
         st.success("CV uploaded successfully!")
                                
@@ -114,7 +111,7 @@ elif page == "Profile":
         with st.spinner("Loading profile..."):
             try:
                 response = requests.post(
-                    f"{BACKEND_URL}/rag/query",
+                    f"{API_URL}/rag/query",
                     json={
                         "prompt": (
                             "Analyze this CV and provide in english only:\n"
@@ -192,7 +189,7 @@ elif page == "Chat":
         with st.spinner("Thinking..."):
             try:
                 response = requests.post(
-                    f"{BACKEND_URL}/rag/query",
+                    f"{API_URL}/rag/query",
                     json={"prompt": user_input}
                 )
                 
