@@ -1,6 +1,7 @@
 #%%
 from PyPDF2 import PdfReader 
-from backend.constants import DATA_PATH
+from backend.src.constants import DATA_PATH
+
 
 def extract_text_from_pdf(path)-> str:
     reader = PdfReader(path)
