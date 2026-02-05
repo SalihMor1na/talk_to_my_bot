@@ -131,4 +131,8 @@ curl -X POST http://localhost:8000/chat \
 ## 📦 Deployment
 
 - Projektet dockeriseras  
-- Deployment till Azure (planerat)  
+- Deployment till Azure (planerat)
+
+## Screenshots
+
+<img width="1914" height="936" alt="image" src="https://github.com/user-attachments/assets/e669e8db-6fb3-401b-8193-04cf12df3428" />
